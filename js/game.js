@@ -3,7 +3,8 @@ import TerrainsCollection from './core/gfx/collections/terrains.js'
 import CharactersCollection from './core/gfx/collections/characters.js'
 
 export default class Game {
-    constructor() {
+    constructor(settings) {
+        this.settings = settings;
         this.client = new GameClient();
         this.terrains = new TerrainsCollection()
         this.heroes = new CharactersCollection().heroes
@@ -62,7 +63,7 @@ export default class Game {
 
     mouseup(evt) {
         if (!this.client.authenticated) {
-            this.client.loginAsync("lichine", "password");
+            this.client.loginAsync(this.settings.username, this.settings.password);
         }
     }
 
