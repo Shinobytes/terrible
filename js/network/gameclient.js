@@ -17,8 +17,7 @@ export default class GameClient {
 
 
     handlePacket(type, data) {
-        console.log(data);
-
+        
         const mapPlayerInfo = (playerData) => new PlayerInfo(
             playerData.Username,
             playerData.Level,
