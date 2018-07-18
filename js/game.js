@@ -41,9 +41,7 @@ export default class Game {
         Hiro.x = 0
         Hiro.y = 0
 
-        if (Hiro.ready) {
-            gfx.drawSprite(Hiro)
-        }
+        if (Hiro.ready) { gfx.drawSprite(Hiro) }
     }
 
     draw(gfx, elapsed) {
@@ -75,19 +73,32 @@ export default class Game {
         // console.log("key up");
     }
 
+    moveCharacter(character, coords) {
+        character.x = coords.x
+        character.y = coords.y
+    }
+
     playerDataReceived(playerInfo) {
         // our player data
-        console.log("we got our data!")
+        console.log("we got our data!", playerInfo)
+        this.moveCharacter(this.heroes.Hiro, playerInfo)
     }
 
     playerAdded(playerInfo) {
         // someone else was added
         console.log("someone just connected!")
+        const Stranger = this.heroes.Shroom
+
+        Stranger.x = playerInfo.x
+        Stranger.y = playerInfo.y
+
+        if (Stranger.ready) { gfx.drawSprite(Stranger) }
     }
 
     playerUpdated(playerInfo) {
         // someone else's position or info was updated
-        console.log("someone just moved!")
+        console.log("someone just moved!", playerInfo)
+        this.moveCharacter(this.heroes.Hiro, playerInfo)
     }
 
     playerRemoved(username) {
