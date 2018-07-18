@@ -1,10 +1,12 @@
 import GameClient from "./network/gameclient.js";
 import TerrainsCollection from './core/gfx/collections/terrains.js'
+import CharactersCollection from './core/gfx/collections/characters.js'
 
 export default class Game {
     constructor() {
         this.client = new GameClient();
         this.terrains = new TerrainsCollection()
+        this.heroes = new CharactersCollection().heroes
     }
 
     drawTerrain(gfx) {
@@ -32,9 +34,22 @@ export default class Game {
         )
     }
 
+    drawCharacters(gfx) {
+        const Hiro = this.heroes.Hiro
+
+        Hiro.x = 0
+        Hiro.y = 0
+
+        if (Hiro.ready) {
+            gfx.drawSprite(Hiro)
+        }
+    }
+
     draw(gfx, elapsed) {
         this.drawTerrain(gfx)
-        this.drawStartingMessage(gfx)
+        if (!this.client.authenticated) return this.drawStartingMessage(gfx)
+        
+        this.drawCharacters(gfx)
     }
 
     update(elapsed) {
