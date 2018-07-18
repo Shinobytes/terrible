@@ -41,7 +41,7 @@ export default class Game {
         Hiro.x = 0
         Hiro.y = 0
 
-        if (Hiro.ready) { gfx.drawSprite(Hiro) }
+        if (Hiro.ready) gfx.drawSprite(Hiro)
     }
 
     draw(gfx, elapsed) {
@@ -76,6 +76,7 @@ export default class Game {
     moveCharacter(character, coords) {
         character.x = coords.x
         character.y = coords.y
+        console.log(`Moved character to x:${coords.x} y:${coords.y}`)
     }
 
     playerDataReceived(playerInfo) {
@@ -85,14 +86,13 @@ export default class Game {
     }
 
     playerAdded(playerInfo) {
-        // someone else was added
-        console.log("someone just connected!")
+        console.log("Someone connected!", playerInfo)
         const Stranger = this.heroes.Shroom
 
         Stranger.x = playerInfo.x
         Stranger.y = playerInfo.y
 
-        if (Stranger.ready) { gfx.drawSprite(Stranger) }
+        if (Stranger.ready) gfx.drawSprite(Stranger)
     }
 
     playerUpdated(playerInfo) {
