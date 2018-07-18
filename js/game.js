@@ -1,17 +1,24 @@
-import GameClient from "./network/gameclient.js";
 import Sprite from "./core/gfx/sprite.js";
+import GameClient from "./network/gameclient.js";
+import TiledSprite from './core/gfx/tiledsprite.js'
 
 export default class Game {
     constructor() {
         this.client = new GameClient();
-        this.terrains = {
-            grass: Sprite.fromUrl('/assets/sprites/tiles/grass.png')
+        this.terrain = {
+            grass: TiledSprite.fromUrl('/assets/sprites/tiles/grass.png')
         }
     }
 
     drawTerrain(gfx) {
-        const grass = this.terrains.grass
-        if (grass.ready) return gfx.drawSprite(grass, 0, 0)
+        const grass = this.terrain.grass
+
+        grass.x = 0
+        grass.y = 0
+        grass.rows = 30
+        grass.columns = 30
+
+        if (grass.ready) return gfx.drawSprite(grass)
     }
 
     async draw(gfx, elapsed) {
