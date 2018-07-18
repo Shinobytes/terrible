@@ -35,4 +35,9 @@ export default class Graphics {
         sprite.y = y || sprite.y || 0;
         sprite.draw(this.context);
     }
+
+    measureString(text, size) {        
+        this.context.font = `${size || 14}px Arial`;
+        return this.context.measureText(text);
+    }
 }

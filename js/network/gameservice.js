@@ -24,7 +24,8 @@ export default class GameService {
     }
 
     this.socket = new WebSocket(
-      `ws://${window.location.hostname}:${window.location.port}/ws`
+      // `ws://${window.location.hostname}:${window.location.port}/ws`
+      "ws://83.254.37.212:49672/ws"
     );
     this.socket.addEventListener("open", () => this.onConnectionOpen());
     this.socket.addEventListener("close", () => this.onConnectionClose());
