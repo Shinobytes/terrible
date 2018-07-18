@@ -1,5 +1,8 @@
+import GameClient from "./network/gameclient.js";
+
 export default class Game {
-    constructor() {        
+    constructor() {    
+        this.client = new GameClient();
     }
 
     draw(gfx, elapsed) {
@@ -8,5 +11,5 @@ export default class Game {
 
     update(elapsed) {
 
-    }
+    }    
 }
