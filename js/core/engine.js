@@ -3,7 +3,7 @@ export default class Engine {
         this.graphics = graphics;        
         this.game     = null;
     }
-    setup(game) {
+    run(game) {
         this.game = game;
         this.graphics.setSize(window.innerWidth, window.innerHeight);
         window.addEventListener("resize", () => {
@@ -16,8 +16,8 @@ export default class Engine {
         if (this.game.update) {
             this.game.update(elapsed);
         }
-        if (this.game.draw(graphics, elapsed)) {
-            this.game.draw(graphics, elapsed);
+        if (this.game.draw(this.graphics, elapsed)) {
+            this.game.draw(this.graphics, elapsed);
         }
         requestAnimationFrame(x => this.tick(x));        
     }
