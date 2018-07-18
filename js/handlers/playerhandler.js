@@ -23,9 +23,9 @@ export default class PlayerHandler {
         return player;
     }
     remove(username) {
-        const index = this.players.findIndex(x => x.info.username == name);
-        if (index != -1) {
-            this.players.splice(index, 1);
+        const index = this.players.findIndex(x => x.info.username == username);
+        if (index != -1) {            
+            this.players = this.players.splice(index, 1);
         }
     }
 }
