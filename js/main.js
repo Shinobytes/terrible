@@ -2,7 +2,7 @@ import Graphics from "./core/graphics.js";
 import Engine from "./core/engine.js";
 import Game from "./game.js";
 
-const settings = { username: "lichine", password: "password" };
+const settings = { username: "user" + parseInt(Math.floor((Math.random() * 1000000))), password: null };
 const canvas   = document.querySelector("#game");
 const graphics = new Graphics(canvas);
 const engine   = new Engine(graphics);
