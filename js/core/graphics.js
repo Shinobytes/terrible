@@ -23,4 +23,14 @@ export default class Graphics {
         this.context.fillStyle = color || "blue";
         this.context.fillRect(0, 0, width, height);
     }
+
+    drawString(text, x, y, color, size) {        
+        this.context.font = `${size || 14}px Arial`;
+        this.context.fillStyle = color || "black";
+        this.context.fillText(text, x, y);
+    }
+
+    drawSprite(sprite) {
+        sprite.draw(this.context);
+    }
 }
