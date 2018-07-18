@@ -4,6 +4,7 @@ import CharactersCollection from './core/gfx/collections/characters.js'
 
 import Player from "./models/player.js";
 import PlayerHandler from "./handlers/playerhandler.js";
+import Camera from "./core/camera.js";
 
 export default class Game {
     constructor(settings) {
@@ -19,11 +20,17 @@ export default class Game {
     drawTerrain(gfx) {
         const grass = this.terrains.grass
 
-        grass.x = 0
-        grass.y = 0
-        grass.rows = window.innerWidth / 10
-        grass.columns = window.innerHeight / 10
-
+        if (this.client.authenticated) {
+            grass.rows = 45; // window.innerWidth / 10
+            grass.columns = 45; // window.innerHeight / 10
+            grass.x = Camera.main.viewport.x - ((grass.columns / 2) * grass.width)
+            grass.y = Camera.main.viewport.y - ((grass.rows / 2) * grass.height)
+        } else {
+            grass.rows = window.innerWidth / 10
+            grass.columns = window.innerHeight / 10
+            grass.x = 0
+            grass.y = 0
+        }        
         if (grass.ready) return gfx.drawSprite(grass)
     }
 
@@ -42,7 +49,6 @@ export default class Game {
     }
 
     drawCharacters(gfx) {
-
 
         // const Hiro = this.heroes.Hiro        
         // if (Hiro.ready) { gfx.drawSprite(Hiro) }
@@ -64,8 +70,11 @@ export default class Game {
     }
 
     update(elapsed) {
+
         // update us
         if (this.player) {
+            Camera.main.viewport.x = -this.player.info.x + (Camera.main.viewport.w / 2);
+            Camera.main.viewport.y = -this.player.info.y + (Camera.main.viewport.h / 2);
             this.player.update(elapsed);
         }
         // update others
@@ -94,8 +103,11 @@ export default class Game {
         // our player data
         console.log("we got our data!", playerInfo)
 
+
         this.player = new Player(playerInfo);
+        this.player.isMe = true;
         this.player.sprite = this.heroes.Hiro;
+
     }
 
     playerAdded(playerInfo) {

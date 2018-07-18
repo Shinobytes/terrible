@@ -1,3 +1,5 @@
+import Camera from "./camera.js";
+
 export default class Engine {
     constructor(graphics) {
         this.graphics = graphics;        
@@ -5,9 +7,9 @@ export default class Engine {
     }
     run(game) {
         this.game = game;
-        this.graphics.setSize(window.innerWidth, window.innerHeight);
+        this.resize();        
         window.addEventListener("resize", () => {
-            this.graphics.setSize(window.innerWidth, window.innerHeight);
+            this.resize();
         });
         window.addEventListener("keydown", (evt) => {
             if (this.game.keydown) {
@@ -39,5 +41,11 @@ export default class Engine {
             this.game.draw(this.graphics, elapsed);
         }
         requestAnimationFrame(x => this.tick(x));        
+    }
+
+    resize() {
+        this.graphics.setSize(window.innerWidth, window.innerHeight);        
+        Camera.main.viewport.w = window.innerWidth;
+        Camera.main.viewport.h = window.innerHeight;
     }
 }
