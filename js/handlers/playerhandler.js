@@ -1,7 +1,7 @@
 import Player from "../models/player.js";
 
 export default class PlayerHandler {
-    constructor() {        
+    constructor() {
         this.players = [];
     }
 
@@ -24,7 +24,7 @@ export default class PlayerHandler {
     }
     remove(username) {
         const index = this.players.findIndex(x => x.info.username == username);
-        if (index != -1) {            
+        if (index != -1) {
             this.players = this.players.splice(index, 1);
         }
     }
