@@ -7,7 +7,8 @@ export default class GameService {
     //  1: OPEN
     //  2: CLOSING
     //  3: CLOSED
-    this.server = "83.254.37.212:49672";
+    this.server   = "83.254.37.212:49672";
+    this.protocol = "http"
     this.token = "";
     this.connectionSuccess = null;
     this.connectionFailed = null;
@@ -36,13 +37,13 @@ export default class GameService {
   }
 
   async loginAsync(username, password) {
-    this.token = await Requests.postAsync(this.server + "/api/Auth/login",
+    this.token = await Requests.postAsync(this.protocol + "://" + this.server + "/api/Auth/login",
       { username: username, password: password });
     return this.authenticated;
   }
 
   logout() {
-    Requests.getAsync(this.server + "/api/auth/logout");
+    Requests.getAsync(this.protocol + "://" + this.server + "/api/auth/logout");
     this.socket.close(1000, "logout");
     this.connectedToServer = false;
     this.token = null;
