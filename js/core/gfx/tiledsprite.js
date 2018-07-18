@@ -14,7 +14,7 @@ export default class TiledSprite {
     static fromUrl(src) {
         const img = new Image();
         img.src = src;
-        return new Sprite(img);
+        return new TiledSprite(img);
     }
 
     get width() {
@@ -39,10 +39,12 @@ export default class TiledSprite {
 
         for (let y = 0; y < this.rows; ++y) {
             for (let x = 0; x < this.columns; ++x) {
-                ctx.drawImage(this.image, 0, 0, this.width, this.height, this.x + (x * this.width), this.y + (y * this.height), this.width, this.height);
+                const renderX = this.x + (x * this.width);
+                const renderY = this.y + (y * this.height);
+                ctx.drawImage(this.image, 0, 0, this.width, this.height, renderX, renderY, this.width, this.height);
             }
         }
-        
+
         ctx.restore();
     }
 }
