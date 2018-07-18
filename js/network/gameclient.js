@@ -1,16 +1,46 @@
 import GameService from "./gameservice.js";
+import PlayerInfo from "../models/playerinfo.js";
 
 export default class GameClient {
-    constructor() {
-        this.service = new GameService();
+    constructor(game) {
+        this.game = game;
+        this.service = new GameService(this);
     }
 
     get authenticated() {
         return this.service.authenticated;
     }
-    
+
     get connected() {
         return this.service.connected;
+    }
+
+
+    handlePacket(type, data) {
+        console.log(data);
+
+        const mapPlayerInfo = (playerData) => new PlayerInfo(
+            playerData.Username,
+            playerData.Level,
+            playerData.Experience,
+            playerData.Position.X,
+            playerData.Position.Y
+        );
+
+        switch (type) {
+            case "PlayerInfo":
+                this.game.playerDataReceived(mapPlayerInfo(data));
+                break;
+
+            case "PlayerCollectionUpdate":
+                data.Added.forEach(x => this.game.playerAdded(mapPlayerInfo(x)));
+                data.Updated.forEach(x => this.game.playerUpdated(mapPlayerInfo(x)));
+                data.Removed.forEach(x => this.game.playerRemoved(x));
+                break;
+            default:
+                console.warn("Unhandled packet type: " + type + ", with data: " + data);
+                break;
+        }
     }
 
     logout() {
@@ -23,7 +53,7 @@ export default class GameClient {
             if (!this.service.connected) {
                 if (await this.service.connectAsync()) {
                     console.log("connection established!");
-                    this.service.beginSession();                    
+                    this.service.beginSession();
                     return true;
                 } else {
                     console.error("connection could not be established!");
@@ -40,21 +70,21 @@ export default class GameClient {
     async loginWithTokenAsync(token) {
         if (!token || token == null) {
             return false;
-          }        
-          this.service.token = token;
-          if (!this.service.connected) {
+        }
+        this.service.token = token;
+        if (!this.service.connected) {
             if (await this.service.connectAsync()) {
-              console.log("connection established!");
-              this.service.beginSession();
-              return true;
+                console.log("connection established!");
+                this.service.beginSession();
+                return true;
             } else {
-              console.error("connection could not be established!");
-              return false;
+                console.error("connection could not be established!");
+                return false;
             }
-          } else {
+        } else {
             console.log("connection established!");
             this.service.beginSession();
-          }        
-          return false;        
+        }
+        return false;
     }
 }

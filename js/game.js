@@ -5,7 +5,7 @@ import CharactersCollection from './core/gfx/collections/characters.js'
 export default class Game {
     constructor(settings) {
         this.settings = settings;
-        this.client = new GameClient();
+        this.client = new GameClient(this);
         this.terrains = new TerrainsCollection()
         this.heroes = new CharactersCollection().heroes
     }
@@ -49,7 +49,7 @@ export default class Game {
     draw(gfx, elapsed) {
         this.drawTerrain(gfx)
         if (!this.client.authenticated) return this.drawStartingMessage(gfx)
-        
+
         this.drawCharacters(gfx)
     }
 
@@ -73,5 +73,25 @@ export default class Game {
 
     keyup(evt) {
         // console.log("key up");
+    }
+
+    playerDataReceived(playerInfo) {
+        // our player data
+        console.log("we got our data!")
+    }
+
+    playerAdded(playerInfo) {
+        // someone else was added
+        console.log("someone just connected!")
+    }
+
+    playerUpdated(playerInfo) {
+        // someone else's position or info was updated
+        console.log("someone just moved!")
+    }
+
+    playerRemoved(username) {
+        // someone else was removed
+        console.log("someone just left!")
     }
 }
