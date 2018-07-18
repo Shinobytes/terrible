@@ -30,7 +30,9 @@ export default class Graphics {
         this.context.fillText(text, x, y);
     }
 
-    drawSprite(sprite) {
+    drawSprite(sprite, x, y) {
+        sprite.x = x || sprite.x || 0;
+        sprite.y = y || sprite.y || 0;
         sprite.draw(this.context);
     }
 }
