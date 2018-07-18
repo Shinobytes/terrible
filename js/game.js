@@ -2,12 +2,18 @@ import GameClient from "./network/gameclient.js";
 import TerrainsCollection from './core/gfx/collections/terrains.js'
 import CharactersCollection from './core/gfx/collections/characters.js'
 
+import Player from "./models/player.js";
+import PlayerHandler from "./handlers/playerhandler.js";
+
 export default class Game {
     constructor(settings) {
         this.settings = settings;
         this.client = new GameClient(this);
         this.terrains = new TerrainsCollection()
         this.heroes = new CharactersCollection().heroes
+
+        this.players = new PlayerHandler();
+        this.player = null;
     }
 
     drawTerrain(gfx) {
@@ -36,12 +42,18 @@ export default class Game {
     }
 
     drawCharacters(gfx) {
-        const Hiro = this.heroes.Hiro
 
-        Hiro.x = 0
-        Hiro.y = 0
 
-        if (Hiro.ready) gfx.drawSprite(Hiro)
+        // const Hiro = this.heroes.Hiro        
+        // if (Hiro.ready) { gfx.drawSprite(Hiro) }
+
+        // draw us
+        if (this.player) {
+            this.player.draw(gfx);
+        }
+
+        // draw other players
+        this.players.draw(gfx);
     }
 
     draw(gfx, elapsed) {
@@ -52,7 +64,12 @@ export default class Game {
     }
 
     update(elapsed) {
-
+        // update us
+        if (this.player) {
+            this.player.update(elapsed);
+        }
+        // update others
+        this.players.update(elapsed);
     }
 
     mousedown(evt) {
@@ -73,36 +90,34 @@ export default class Game {
         // console.log("key up");
     }
 
-    moveCharacter(character, coords) {
-        character.x = coords.x
-        character.y = coords.y
-        console.log(`Moved character to x:${coords.x} y:${coords.y}`)
-    }
-
     playerDataReceived(playerInfo) {
         // our player data
         console.log("we got our data!", playerInfo)
-        this.moveCharacter(this.heroes.Hiro, playerInfo)
+
+        this.player = new Player(playerInfo);
+        this.player.sprite = this.heroes.Hiro;
     }
 
     playerAdded(playerInfo) {
-        console.log("Someone connected!", playerInfo)
-        const Stranger = this.heroes.Shroom
+        // someone else was added
+        console.log("someone just connected!")
 
-        Stranger.x = playerInfo.x
-        Stranger.y = playerInfo.y
-
-        if (Stranger.ready) gfx.drawSprite(Stranger)
+        const player = this.players.add(playerInfo);
+        player.sprite = this.heroes.Shroom;
     }
 
     playerUpdated(playerInfo) {
         // someone else's position or info was updated
         console.log("someone just moved!", playerInfo)
-        this.moveCharacter(this.heroes.Hiro, playerInfo)
+
+        const updatedPlayer = this.players.get(playerInfo.username);
+
+        updatedPlayer.moveTo(playerInfo.x, updatedPlayer.y);
     }
 
     playerRemoved(username) {
         // someone else was removed
         console.log("someone just left!")
+        this.players.remove(username);
     }
 }
