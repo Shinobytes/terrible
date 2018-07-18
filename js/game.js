@@ -28,6 +28,16 @@ export default class Game {
 
     }
 
+    mousedown(evt) {
+
+    }
+
+    mouseup(evt) {
+        if (!this.client.authenticated) {
+            this.client.loginAsync("lichine", "password");
+        }
+    }
+
     keydown(evt) {
         // console.log("key down");
     }

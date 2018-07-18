@@ -19,6 +19,16 @@ export default class Engine {
                 this.game.keyup(evt);
             }
         });        
+        window.addEventListener("mouseup", (evt) => {
+            if (this.game.mouseup) {
+                this.game.mouseup(evt);
+            }
+        });
+        window.addEventListener("mousedown", (evt) => {
+            if (this.game.mousedown) {
+                this.game.mousedown(evt);
+            }
+        });        
         this.tick(0);
     }
     tick(elapsed) {

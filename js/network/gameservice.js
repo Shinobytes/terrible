@@ -7,7 +7,7 @@ export default class GameService {
     //  1: OPEN
     //  2: CLOSING
     //  3: CLOSED
-
+    this.server = "83.254.37.212:49672";
     this.token = "";
     this.connectionSuccess = null;
     this.connectionFailed = null;
@@ -25,7 +25,7 @@ export default class GameService {
 
     this.socket = new WebSocket(
       // `ws://${window.location.hostname}:${window.location.port}/ws`
-      "ws://83.254.37.212:49672/ws"
+      `ws://${this.server}/ws`
     );
     this.socket.addEventListener("open", () => this.onConnectionOpen());
     this.socket.addEventListener("close", () => this.onConnectionClose());
@@ -36,13 +36,13 @@ export default class GameService {
   }
 
   async loginAsync(username, password) {
-    this.token = await Requests.postAsync("/api/Auth/login",
+    this.token = await Requests.postAsync(this.server + "/api/Auth/login",
       { username: username, password: password });
     return this.authenticated;
   }
 
   logout() {
-    Requests.getAsync("/api/auth/logout");
+    Requests.getAsync(this.server + "/api/auth/logout");
     this.socket.close(1000, "logout");
     this.connectedToServer = false;
     this.token = null;
