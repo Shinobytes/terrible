@@ -1,5 +1,3 @@
-import Sprite from "./sprite.js";
-
 export default class TiledSprite {
     constructor(image) {
         this.image = image;
