@@ -1,4 +1,3 @@
-import Sprite from "../sprite.js";
 import TiledSprite from '../tiledsprite.js'
 
 export default class Terrain {

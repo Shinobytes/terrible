@@ -1,6 +1,4 @@
-import Sprite from "./core/gfx/sprite.js";
 import GameClient from "./network/gameclient.js";
-import TiledSprite from './core/gfx/tiledsprite.js'
 import TerrainsCollection from './core/gfx/collections/terrains.js'
 
 export default class Game {
