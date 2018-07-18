@@ -24,8 +24,9 @@ export default class Graphics {
         this.context.fillRect(0, 0, width, height);
     }
 
-    drawString(text, x, y, color, size) {        
-        this.context.font = `${size || 14}px Arial`;
+    drawString(text, x, y, color, size = 32, fontFamily = 'Chela One, Arial, sans-serif') {        
+        this.context.font = `${size}px ${fontFamily}`;
+        this.context.fontFamily = fontFamily
         this.context.fillStyle = color || "black";
         this.context.fillText(text, x, y);
     }
@@ -36,8 +37,9 @@ export default class Graphics {
         sprite.draw(this.context);
     }
 
-    measureString(text, size) {        
-        this.context.font = `${size || 14}px Arial`;
+    measureString(text, size = 32, fontFamily = 'Chela One, Arial, sans-serif') {        
+        this.context.font = `${size}px ${fontFamily}`;
+        this.context.fontFamily = fontFamily
         return this.context.measureText(text);
     }
 }
