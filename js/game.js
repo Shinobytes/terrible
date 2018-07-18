@@ -12,4 +12,12 @@ export default class Game {
     update(elapsed) {
 
     }    
+
+    keydown(evt) {
+        // console.log("key down");
+    }
+
+    keyup(evt) {
+        // console.log("key up");
+    }
 }

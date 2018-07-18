@@ -9,7 +9,16 @@ export default class Engine {
         window.addEventListener("resize", () => {
             this.graphics.setSize(window.innerWidth, window.innerHeight);
         });
-
+        window.addEventListener("keydown", (evt) => {
+            if (this.game.keydown) {
+                this.game.keydown(evt);
+            }
+        });
+        window.addEventListener("keyup", (evt) => {
+            if (this.game.keyup) {
+                this.game.keyup(evt);
+            }
+        });        
         this.tick(0);
     }
     tick(elapsed) {
