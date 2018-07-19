@@ -1,3 +1,4 @@
+import Appearance from "../models/appearance.js";
 import GameService from "./gameservice.js";
 import PlayerInfo from "../models/playerinfo.js";
 
@@ -16,14 +17,19 @@ export default class GameClient {
     }
 
 
-    handlePacket(type, data) {
-        
+    handlePacket(type, data) {        
         const mapPlayerInfo = (playerData) => new PlayerInfo(
             playerData.Username,
             playerData.Level,
             playerData.Experience,
             playerData.Position.X,
-            playerData.Position.Y
+            playerData.Position.Y,
+            new Appearance(
+                playerData.Appearance.Gender,
+                playerData.Appearance.Head,
+                playerData.Appearance.HairColor,
+                playerData.Appearance.Body
+            )
         );
 
         switch (type) {

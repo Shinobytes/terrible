@@ -37,6 +37,12 @@ export default class Graphics {
         sprite.draw(this.context);
     }
 
+    drawRect(x, y, w, h, color) {
+        this.context.strokeStyle = color;
+        this.context.rect(x, y, w, h);
+        this.context.stroke();
+    }
+
     measureString(text, size = 32, fontFamily = 'Chela One, Arial, sans-serif') {        
         this.context.font = `${size}px ${fontFamily}`;
         this.context.fontFamily = fontFamily
