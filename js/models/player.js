@@ -1,10 +1,10 @@
 import Camera from "../core/camera.js";
-import CharacterSprite from "../core/gfx/CharacterSprite.js";
+import RagnarokSprite from "../core/gfx/ragnaroksprite.js";
 
 export default class Player {
     constructor(playerInfo) {
         this.info = playerInfo;
-        this.character = new CharacterSprite(playerInfo.appearance);
+        this.character = new RagnarokSprite(playerInfo.appearance);
         this.isMe = false;
     }
 
