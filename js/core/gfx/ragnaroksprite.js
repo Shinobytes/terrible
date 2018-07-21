@@ -15,6 +15,7 @@ export default class RagnarokSprite {
     }
 
     async loadSpriteSheets() {      
+        // await this.loadSpriteSheetDefinitionAsync(x => this.headSpriteSheet = x, `/assets/sprites/characters/heads_${this.appearance.gender}_${this.appearance.hairColor}`);
         await this.loadSpriteSheetDefinitionAsync(x => this.headSpriteSheet = x, `/assets/sprites/characters/heads_${this.appearance.gender}_0`);
         await this.loadSpriteSheetDefinitionAsync(x => this.bodySpriteSheet = x, `/assets/sprites/characters/body_${this.appearance.gender}_${this.appearance.body}`);
         
