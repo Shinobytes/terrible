@@ -17,23 +17,22 @@ export default class RagnarokSprite {
     async loadSpriteSheets() {      
         await this.loadSpriteSheetDefinitionAsync(x => this.headSpriteSheet = x, `/assets/sprites/characters/heads_${this.appearance.gender}_0`);
         await this.loadSpriteSheetDefinitionAsync(x => this.bodySpriteSheet = x, `/assets/sprites/characters/body_${this.appearance.gender}_${this.appearance.body}`);
-
         
         this.headHeight = this.appearance.gender == 0 ? 20 : 24;
 
         const bodySprite = this.bodySpriteSheet.definition[0].Sprites[0];
-
         this.bodySpriteSheet.spriteWidth = bodySprite.Width;
         this.bodySpriteSheet.spriteHeight = bodySprite.Height;
         this.bodySpriteSheet.spriteX = bodySprite.X;
         this.bodySpriteSheet.spriteY = bodySprite.Y;
         
-        const headSprite = this.headSpriteSheet.definition[0].Sprites[0];
 
-        this.headSpriteSheet.spriteWidth = headSprite.Width; // this.appearance.gender == 0 ? 40 : 42;
-        this.headSpriteSheet.spriteHeight = headSprite.Height; // this.appearance.gender == 0 ? 34 : 54;  
-        this.headSpriteSheet.spriteX = headSprite.X;//0;
-        this.headSpriteSheet.spriteY = headSprite.Y;// this.headSpriteSheet.spriteWidth * this.appearance.head;
+        console.log(this.appearance.head);
+        const headSprite = this.headSpriteSheet.definition[this.appearance.head].Sprites[0];
+        this.headSpriteSheet.spriteWidth = headSprite.Width;
+        this.headSpriteSheet.spriteHeight = headSprite.Height;
+        this.headSpriteSheet.spriteX = headSprite.X;
+        this.headSpriteSheet.spriteY = headSprite.Y;
         this.ready = true;
     }
 
