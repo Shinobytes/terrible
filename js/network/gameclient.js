@@ -17,7 +17,7 @@ export default class GameClient {
     }
 
 
-    handlePacket(type, data) {        
+    handlePacket(type, data) {
         const mapPlayerInfo = (playerData) => new PlayerInfo(
             playerData.Username,
             playerData.Level,
@@ -37,6 +37,9 @@ export default class GameClient {
                 this.game.playerDataReceived(mapPlayerInfo(data));
                 break;
 
+            case "PlayerMoveTo":
+                this.game.playerPositionUpdated(data.Username, data.X, data.Y);
+                break;
             case "PlayerCollectionUpdate":
                 data.Added.forEach(x => this.game.playerAdded(mapPlayerInfo(x)));
                 data.Updated.forEach(x => this.game.playerUpdated(mapPlayerInfo(x)));
@@ -46,6 +49,18 @@ export default class GameClient {
                 console.warn("Unhandled packet type: " + type + ", with data: " + data);
                 break;
         }
+    }
+
+    moveTo(worldX, worldY) {
+        this.service.send(
+            JSON.stringify({
+                header: "PlayerMoveTo",
+                data: JSON.stringify({
+                    x: worldX,
+                    y: worldY
+                })
+            })
+        );
     }
 
     logout() {

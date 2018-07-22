@@ -6,6 +6,6 @@ const settings = { username: "user" + parseInt(Math.floor((Math.random() * 10000
 const canvas   = document.querySelector("#game");
 const graphics = new Graphics(canvas);
 const engine   = new Engine(graphics);
-const game     = new Game(settings);
+const game     = new Game(engine, settings);
 
 engine.run(game);

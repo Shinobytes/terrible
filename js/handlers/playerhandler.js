@@ -6,6 +6,7 @@ export default class PlayerHandler {
     }
 
     update(elapsed) {
+        this.players.sort((x,y) => x.y - y.y);
         this.players.forEach(x => x.update(elapsed));
     }
 
@@ -15,6 +16,12 @@ export default class PlayerHandler {
 
     get(username) {
         return this.players.find(x => x.info.username == username);
+    }
+
+    me(playerInfo) {
+        const player = this.add(playerInfo);
+        player.isMe = true;
+        return player;
     }
 
     add(playerInfo) {

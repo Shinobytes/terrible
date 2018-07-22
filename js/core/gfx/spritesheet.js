@@ -7,6 +7,7 @@ export default class SpriteSheet {
         this.spriteY = 0;
         this.spriteWidth = 0;
         this.spriteHeight = 0;        
+        this.flip = false;
     }
 
     static fromUrl(src) {
@@ -34,7 +35,17 @@ export default class SpriteSheet {
 
         ctx.save();
         ctx.globalAlpha = this.opacity;
-        ctx.drawImage(this.image, this.spriteX, this.spriteY, this.spriteWidth, this.spriteHeight, this.x, this.y, this.spriteWidth, this.spriteHeight);
+        if (this.flip) {
+            ctx.translate(this.x, 0);
+            ctx.scale(-1, 1);
+        }
+        ctx.drawImage(this.image, this.spriteX, this.spriteY, 
+            this.spriteWidth, 
+            this.spriteHeight, 
+            this.flip ? -(this.spriteWidth / 2) : this.x, 
+            this.y, 
+            this.spriteWidth, 
+            this.spriteHeight);
         ctx.restore();
     }
 }

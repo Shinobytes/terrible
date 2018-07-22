@@ -56,6 +56,10 @@ export default class GameService {
         this.socket.send(this.token);
     }
 
+    send(data) {
+        this.socket.send(data);
+    }
+
     onMessageReceived(msg) {
         const payload = msg.data;
         try {

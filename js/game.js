@@ -7,8 +7,9 @@ import PlayerHandler from "./handlers/playerhandler.js";
 import Camera from "./core/camera.js";
 
 export default class Game {
-    constructor(settings) {
+    constructor(engine, settings) {
         this.settings = settings;
+        this.engine = engine;
         this.client = new GameClient(this);
         this.terrains = new TerrainsCollection()
         this.heroes = new CharactersCollection().heroes
@@ -54,9 +55,9 @@ export default class Game {
         // if (Hiro.ready) { gfx.drawSprite(Hiro) }
 
         // draw us
-        if (this.player) {
-            this.player.draw(gfx);
-        }
+        // if (this.player) {
+        //     this.player.draw(gfx);
+        // }
 
         // draw other players
         this.players.draw(gfx);
@@ -70,25 +71,37 @@ export default class Game {
     }
 
     update(elapsed) {
-
-        // update us
-        if (this.player) {
-            Camera.main.viewport.x = -this.player.info.x + (Camera.main.viewport.w / 2);
-            Camera.main.viewport.y = -this.player.info.y + (Camera.main.viewport.h / 2);
-            this.player.update(elapsed);
-        }
         // update others
         this.players.update(elapsed);
+
+        if (this.player) {
+            Camera.main.viewport.x = -this.player.x + (Camera.main.viewport.w / 2);
+            Camera.main.viewport.y = -this.player.y + (Camera.main.viewport.h / 2);
+            // this.player.update(elapsed);
+        }
     }
 
     mousedown(evt) {
+        if (this.client.authenticated) {
 
+            const screen = this.player.getScreenPosition();
+            const xOffset = screen.x - this.engine.mouse.x;
+            const yOffset = screen.y - this.engine.mouse.y;
+            
+            const worldX = parseInt(this.player.x - xOffset);
+            const worldY = parseInt(this.player.y - yOffset);
+            console.log("moveto (world: " + worldX + ", " + worldY + ") (offset: " + xOffset + ", " + yOffset + ") (player: " + this.player.x + ", " + this.player.y + ")");
+
+            this.player.moveTo(worldX, worldY);
+            this.client.moveTo(worldX, worldY);
+        }
     }
 
     mouseup(evt) {
         if (!this.client.authenticated) {
             this.client.loginAsync(this.settings.username, this.settings.password);
-        }
+            return;
+        }    
     }
 
     keydown(evt) {
@@ -103,28 +116,27 @@ export default class Game {
         // our player data
         console.log("we got our data!", playerInfo)
 
-
-        this.player = new Player(playerInfo);
-        this.player.isMe = true;
-        this.player.sprite = this.heroes.Hiro;
-
+        this.player = this.players.me(playerInfo);
     }
 
     playerAdded(playerInfo) {
         // someone else was added
         console.log("someone just connected!")
-
         const player = this.players.add(playerInfo);
-        player.sprite = this.heroes.Shroom;
     }
 
     playerUpdated(playerInfo) {
         // someone else's position or info was updated
-        console.log("someone just moved!", playerInfo)
+        console.log("someone changed their appearances or something", playerInfo)
 
         const updatedPlayer = this.players.get(playerInfo.username);
+        // updatedPlayer.moveTo(playerInfo.x, playerInfo.y);
+    }
 
-        updatedPlayer.moveTo(playerInfo.x, updatedPlayer.y);
+    playerPositionUpdated(username, x, y) {
+        console.log(`${username} moved to ${x},${y}`);
+        const updatedPlayer = this.players.get(username);
+        updatedPlayer.moveTo(x, y);
     }
 
     playerRemoved(username) {
